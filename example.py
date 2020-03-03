@@ -16,6 +16,8 @@ class ImageViewer(QtWidgets.QMainWindow):
 
         self.scrollArea = QtWidgets.QScrollArea()
         self.scrollArea.setBackgroundRole(QtGui.QPalette.Dark)
+        self.scrollArea.setWidgetResizable(False)
+        self.scrollArea.setGeometry(0, 0, 200, 200)
         self.scrollArea.setWidget(self.imageLabel)
         self.setCentralWidget(self.scrollArea)
 
@@ -23,11 +25,13 @@ class ImageViewer(QtWidgets.QMainWindow):
         self.createMenus()
 
         self.setWindowTitle("Image Viewer")
-        self.resize(500, 400)
+        self.resize(1000, 800)
 
     def open(self):
-        fileName,_ = QtWidgets.QFileDialog.getOpenFileName(self, "Open File",
-                QtCore.QDir.currentPath())
+        fileName,_ = QtWidgets.QFileDialog.getOpenFileNames(
+            self, "Open File", QtCore.QDir.currentPath(),
+            "Images (*.jpg *.png *.tiff *.tif *.bmp)")
+        fileName = fileName[0]
         if fileName:
             image = QtGui.QImage(fileName)
             if image.isNull():
@@ -44,6 +48,7 @@ class ImageViewer(QtWidgets.QMainWindow):
 
             if not self.fitToWindowAct.isChecked():
                 self.imageLabel.adjustSize()
+                self.scrollArea.setGeometry(0, 0, 500, 500)
 
     def print_(self):
         dialog = QtPrintSupport.QPrintDialog(self.printer, self)
