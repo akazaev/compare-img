@@ -25,7 +25,12 @@ class ImageViewer(QtWidgets.QMainWindow):
         self.createMenus()
 
         self.setWindowTitle("Image Viewer")
-        self.resize(1000, 800)
+        desktop = QtWidgets.QDesktopWidget()
+        screen = desktop.screenNumber(QtGui.QCursor.pos())
+        screenSize = desktop.availableGeometry(screen)
+        w = screenSize.width()
+        h = screenSize.height()
+        self.resize(w * 0.6, h * 0.6)
 
     def open(self):
         fileName,_ = QtWidgets.QFileDialog.getOpenFileNames(
